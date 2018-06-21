@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/bootstrap-slider.min.css">
+  <title>Speech</title>
+</head>
+<body>
+  <!-- Анимированный фон -->
+  <div id="particles-js"></div>
+
+  <div class="wrapper col-sm-8 col-sm-offset-2">
+    <!-- Логотип -->
+    <div class="logo text-center">
+      <h2 class="">Speech</h2>  
+      <div class="bd-example bd-example-padded-bottom settings">
+        <img src="https://png.icons8.com/office/50/000000/settings.png" data-toggle="modal" data-target="#gridSystemModal">
+    </div>
+    </div>
+    
+    <!-- Кнопки навигации -->
+    <div class="btns text-center">
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active slct first-select">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked> Озвучити
+        </label>
+        <label class="btn btn-primary slct second-select">
+          <input type="radio" name="options" id="option2" autocomplete="off"> Розпізнати
+        </label>
+      </div>
+    </div>
+    <!-- Контентная часть -->
+    <div class="content">
+      <!-- Вкладка синтеза речи -->
+      <div class="first-content">
+        <h3 class="col-xs-10 col-xs-offset-1 text-center capt"><span class="label label-default">Введіть текст</span></h3>
+        <textarea name="txt" rows="8" cols="80" class="col-xs-10 col-xs-offset-1" id="first-in"></textarea>
+        <button type="button" onclick="speak()" class="btn btn-primary btn-lg speak-btn col-xs-4 col-xs-offset-4">Проговорити</button>
+        <img src="assets/wave.png" class="wave col-xs-4 col-xs-offset-4">
+      </div>
+      <!-- Вкладка распознавания речи -->
+      <div class="second-content">
+        <h3 class="col-xs-10 col-xs-offset-1 text-center capt"><span class="label label-default">Вихідний текст</span></h3>
+        <textarea name="out" rows="8" cols="80" class="col-xs-10 col-xs-offset-1" id="second-in"></textarea>
+        <button type="button" onclick="listen()" class="btn btn-primary btn-lg speak-btn col-xs-3 col-xs-push-2">Слухати</button>
+        <button type="button" onclick="stop()" class="btn btn-primary btn-lg speak-btn col-xs-3 col-xs-push-4">Зупинити</button>
+        <img src="assets/wave.png" class="wave col-xs-4 col-xs-offset-4">
+        <h3 class="col-xs-10 col-xs-offset-1 text-center capt time"><span class="label label-default">Зачекайте секунду...</span></h3>
+      </div>
+      <div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="gridModalLabel">Налаштування синтезу</h4>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid bd-example-row">
+                <div class="dropdown col-xs-4">
+                  <button class="btn btn-default dropdown-toggle voice-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Голос: Omazh
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-voices" aria-labelledby="dropdownMenu1">
+                    <li class="dropdown-header">Чоловічі</li>
+                    <li><a href="#" class="zahar-voice">Zahar</a></li>
+                    <li><a href="#" class="ermil-voice">Ermil</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-header">Жіночі</li>
+                    <li><a href="#" class="omazh-voice">Omazh</a></li>
+                    <li><a href="#" class="jane-voice">Jane</a></li>
+                  </ul>
+                </div>
+                <div class="dropdown col-xs-4">
+                  <button class="btn btn-default dropdown-toggle emotion-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Емоції: Позитивні
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-voices" aria-labelledby="dropdownMenu1">
+                    <li><a href="#" class="good-voice">Позитивні</a></li>
+                    <li><a href="#" class="neutral-voice">Нейтральні</a></li>
+                    <li><a href="#" class="evil-voice">Негативні</a></li>
+                  </ul>
+                </div>
+                <input id="ex1" class="col-xs-4" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2" data-slider-step="0.1" data-slider-value="1.0"/>
+              </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary ready" data-dismiss="modal">Готово</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Подключение JS скриптов -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+  <script src="https://webasr.yandex.net/jsapi/v1/webspeechkit.js" type="text/javascript"></script>
+  <script src="https://webasr.yandex.net/jsapi/v1/webspeechkit-settings.js" type="text/javascript"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="js/bootstrap-slider.min.js" type="text/javascript"></script>
+  <script src="js/particles.min.js" type="text/javascript"></script>
+  <script src="js/page.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
